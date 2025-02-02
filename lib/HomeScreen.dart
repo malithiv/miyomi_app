@@ -1,34 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Make status bar transparent
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
+
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(0.03, -1.00),
-            end: Alignment(-0.03, 1),
-            colors: [Colors.white, Color(0xFFBDE0FE)],
+      extendBodyBehindAppBar: true, // Extend content behind app bar
+      extendBody: true, // Extend content behind bottom navigation
+      body: Stack(
+        children: [
+          // Background container with gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment(0.03, -1.00),
+                end: Alignment(-0.03, 1),
+                colors: [Colors.white, Color(0xFFBDE0FE)],
+              ),
+            ),
           ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildAppBar(),
-              //_buildGreeting(),
-              _buildFeaturedBanner(),
-              _buildQuickActions(),
-              _buildAccessButton(),
-              _buildCategories(),
-              //_buildRecommendations(),
-              _buildNavigationBar(),
-            ],
+
+          // Scrollable content
+          SafeArea(
+            bottom: false, // Don't add padding at bottom for nav bar
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 100), // Add padding for nav bar
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildAppBar(),
+                    _buildFeaturedBanner(),
+                    _buildQuickActions(),
+                    _buildAccessButton(),
+                    _buildCategories(),
+                    _buildCategories(),
+                    _buildCategories(),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+
+          // Fixed bottom navigation bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20, // Adjust this value to control bottom spacing
+            child: _buildNavigationBar(),
+          ),
+        ],
       ),
     );
   }

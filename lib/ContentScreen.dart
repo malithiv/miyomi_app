@@ -1,30 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ContentScreen extends StatelessWidget {
   const ContentScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Make status bar transparent
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light, // Light icons for dark header
+      ),
+    );
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(0.10, -1.00),
-            end: Alignment(-0.1, 1),
-            colors: [Colors.white, Color(0xFFBDE0FE)],
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      body: Stack(
+        children: [
+          // Background gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment(0.10, -1.00),
+                end: Alignment(-0.1, 1),
+                colors: [Colors.white, Color(0xFFBDE0FE)],
+              ),
+            ),
           ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeader(),
-              _buildFilterTabs(),
-              _buildSearchBar(),
-              _buildCategorySection(),
-              _buildNavigationBar(),
-            ],
+
+          // Fixed Header
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: _buildHeader(),
           ),
-        ),
+
+          // Scrollable Content
+          Positioned(
+            top: 119, // Height of header
+            left: 0,
+            right: 0,
+            bottom: 100, // Space for navigation bar
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildFilterTabs(),
+                  _buildSearchBar(),
+                  _buildCategorySection(),
+                ],
+              ),
+            ),
+          ),
+
+          // Fixed Navigation Bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 20,
+            child: _buildNavigationBar(),
+          ),
+        ],
       ),
     );
   }
@@ -169,7 +206,7 @@ class ContentScreen extends StatelessWidget {
         'image': 'assets/images/mindcast_category.png'
       },
       {
-        'title': 'Mindbooks',
+        'title': 'Mindbook',
         'description': 'Share your knowledge and create impactful content',
         'image': 'assets/images/mindbooks_category.png'
       },
@@ -177,6 +214,21 @@ class ContentScreen extends StatelessWidget {
         'title': 'Mindflix',
         'description': 'Create and share trans-formative video content on mental wellness',
         'image': 'assets/images/mindflix_category.png'
+      },
+      {
+        'title': 'Mindcourse',
+        'description': 'Create and share trans-formative video content on mental wellness',
+        'image': 'assets/images/mindflix_category.png'
+      },
+      {
+        'title': 'Mind on Live',
+        'description': 'Share your voice and inspire minds with powerful content',
+        'image': 'assets/images/mindcast_category.png'
+      },
+      {
+        'title': 'Mindevent',
+        'description': ' Share your knowledge and create impactful content',
+        'image': 'assets/images/mindbooks_category.png'
       },
       // Add other categories as needed
     ];
@@ -252,7 +304,7 @@ class ContentScreen extends StatelessWidget {
                       fontFamily: 'Urbanist',
                       fontWeight: FontWeight.w600,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.justify,
                   ),
                 ],
               ),

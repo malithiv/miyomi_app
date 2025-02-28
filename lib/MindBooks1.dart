@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MindBooks1 extends StatelessWidget {
+import 'CustomBottomNavBar.dart';
+
+class MindBooks1 extends StatefulWidget {
   const MindBooks1({Key? key}) : super(key: key);
+
+  @override
+  State<MindBooks1> createState() => _MindBooks1State();
+}
+
+class _MindBooks1State extends State<MindBooks1> {
+  int _currentIndex = 1; // Since Library is highlighted in your example
+
+  void _onNavItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    // Here you would handle navigation to different screens based on index
+    // For example:
+    // if (index != _currentIndex) {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => _getScreenForIndex(index)),
+    //   );
+    // }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +52,18 @@ class MindBooks1 extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            child: _buildBottomNavBar(),
+            child: CustomBottomNavBar(
+              currentIndex: _currentIndex,
+              onTap: _onNavItemTapped,
+            ),
           ),
         ],
       ),
     );
   }
+
+
+
 
   Widget _buildMainContent(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

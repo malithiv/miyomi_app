@@ -14,6 +14,7 @@ void main() {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     return (MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => MindCast2(),
+        '/': (context) => MindBooks1(),
         '/home': (context) => HomeScreen(), // Replace with your actual home screen
         '/signupEmail': (context) => SignUpEmail(), // Replace with your sign-up screen
       },

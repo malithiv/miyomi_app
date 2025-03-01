@@ -1,33 +1,66 @@
-import 'package:miyomi/AuthorScreen.dart';
-import 'package:miyomi/ContentScreen.dart';
-import 'package:miyomi/ContentScreen2.dart';
-import 'package:miyomi/HomeScreen.dart';
-import 'package:miyomi/MindBooks1.dart';
-import 'package:miyomi/MindBooks2.dart';
-import 'package:miyomi/MindCast1.dart';
-import 'package:miyomi/MindCast2.dart';
-import 'package:miyomi/SignUpEmail.dart';
-import 'package:miyomi/LoginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:miyomi/Mindcourse1Screen.dart';
+// Import all your screens
+
+import 'HomeScreen.dart';
+import 'LoginScreen.dart';
+import 'SignUpEmail.dart';
+import 'SizeConfig.dart';
 
 void main() {
+  // Lock orientation to portrait
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return (MaterialApp(
-      initialRoute: '/',
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Miyomi App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Urbanist',
+      ),
+      // Use the ResponsiveScreen widget to wrap your initial route
+      home: ResponsiveScreen(child: LoginScreen()),
       routes: {
-        '/': (context) => MindBooks1(),
-        '/home': (context) => HomeScreen(), // Replace with your actual home screen
-        '/signupEmail': (context) => SignUpEmail(), // Replace with your sign-up screen
+
+        '/home': (context) => ResponsiveScreen(child: HomeScreen()),
+        '/signupEmail': (context) => ResponsiveScreen(child: SignUpEmail()),
+        // Add more routes as needed
       },
-    ));
+    );
+  }
+}
+
+// Step 3: Create a ResponsiveScreen wrapper widget
+class ResponsiveScreen extends StatelessWidget {
+  final Widget child;
+
+  const ResponsiveScreen({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Initialize SizeConfig
+    SizeConfig().init(context);
+
+    return FittedBox(
+      fit: BoxFit.contain,
+      child: SizedBox(
+        width: SizeConfig.screenWidth,
+        height: SizeConfig.screenHeight,
+        child: child,
+      ),
+    );
   }
 }

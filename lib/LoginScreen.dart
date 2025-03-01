@@ -13,10 +13,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen dimensions
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate proportional sizes
+    final waveHeight = screenHeight * 0.15;
+    final meditationHeight = screenHeight * 0.22;
+    final fieldHeight = screenHeight * 0.05;
+    final buttonHeight = screenHeight * 0.055;
+    final socialButtonHeight = screenHeight * 0.04;
+    final spacingLarge = screenHeight * 0.02;
+    final spacingMedium = screenHeight * 0.012;
+    final spacingSmall = screenHeight * 0.008;
+
+    // Font sizes
+    final headingFontSize = screenHeight * 0.025;
+    final buttonFontSize = screenHeight * 0.022;
+    final fieldFontSize = screenHeight * 0.016;
+    final smallFontSize = screenHeight * 0.012;
+
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: screenWidth,
+        height: screenHeight,
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -25,47 +45,35 @@ class _LoginScreenState extends State<LoginScreen> {
             colors: [Colors.white, Color(0xFFBDE0FE)],
           ),
         ),
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              // Wave Image
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Image.asset(
-                  'assets/images/wave.png', // Path to your wave image
-                  fit: BoxFit.cover,
-                  height: 200, // Adjust height as needed
-                ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Wave Image
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Image.asset(
+                'assets/images/wave.png',
+                fit: BoxFit.cover,
+                height: waveHeight,
               ),
+            ),
 
-              // Status Bar Items (Battery, WiFi, etc.)
-              Positioned(
-                left: 0,
-                top: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 42,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // You can add status bar icons here if needed
-                    ],
-                  ),
-                ),
+            // Main Content - No ScrollView, using a Column with mainAxisSize.min
+            Padding(
+              padding: EdgeInsets.only(
+                top: waveHeight * 0.5,
+                bottom: screenHeight * 0.02,
               ),
-
-              // Main Content
-              Column(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 80), // Spacing for wave image
                   // Meditation Image
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 226,
+                    width: screenWidth,
+                    height: meditationHeight,
                     alignment: Alignment.center,
                     child: Image.asset(
                       'assets/images/meditation.png',
@@ -75,25 +83,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Welcome Text
                   Padding(
-                    padding: const EdgeInsets.only(left: 28, top: 20),
+                    padding: EdgeInsets.only(
+                      left: screenWidth * 0.07,
+                      top: spacingMedium,
+                    ),
                     child: Text(
                       'Hello,\nWelcome Back!',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 24,
+                        fontSize: headingFontSize,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: spacingMedium),
 
                   // Email TextField
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                     child: Container(
-                      height: 43,
+                      height: fieldHeight,
                       decoration: ShapeDecoration(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -105,9 +116,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'Email or Phone',
                           hintStyle: TextStyle(
                             color: Color(0xFF5B5B5B),
-                            fontSize: 15,
+                            fontSize: fieldFontSize,
                           ),
-                          prefixIcon: Icon(Icons.person_outline),
+                          prefixIcon: Icon(Icons.person_outline, size: fieldHeight * 0.5),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(horizontal: 15),
                         ),
@@ -115,13 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 18),
+                  SizedBox(height: spacingMedium),
 
                   // Password TextField
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
                     child: Container(
-                      height: 43,
+                      height: fieldHeight,
                       decoration: ShapeDecoration(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -134,12 +145,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'Password',
                           hintStyle: TextStyle(
                             color: Color(0xFF5B5B5B),
-                            fontSize: 15,
+                            fontSize: fieldFontSize,
                           ),
-                          prefixIcon: Icon(Icons.lock_outline),
+                          prefixIcon: Icon(Icons.lock_outline, size: fieldHeight * 0.5),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              size: fieldHeight * 0.5,
                             ),
                             onPressed: () {
                               setState(() {
@@ -154,18 +166,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-                  // Rest of the code remains the same...
                   // Remember me and Forgot password
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(28, 12, 28, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        screenWidth * 0.07,
+                        spacingSmall,
+                        screenWidth * 0.07,
+                        0
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
                             Container(
-                              width: 12,
-                              height: 12,
+                              width: fieldHeight * 0.25,
+                              height: fieldHeight * 0.25,
                               decoration: ShapeDecoration(
                                 color: _rememberMe ? Color(0xFF023047) : Color(0xFFD9D9D9),
                                 shape: RoundedRectangleBorder(
@@ -184,23 +200,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                 visualDensity: VisualDensity.compact,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: screenWidth * 0.02),
                             Text(
                               'Remember me',
                               style: TextStyle(
                                 color: Color(0xFF5B5B5B),
-                                fontSize: 11,
+                                fontSize: smallFontSize,
                               ),
                             ),
                           ],
                         ),
                         TextButton(
                           onPressed: () {},
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
                           child: Text(
                             'forgot password?',
                             style: TextStyle(
                               color: Color(0xFF023047),
-                              fontSize: 11,
+                              fontSize: smallFontSize,
                             ),
                           ),
                         ),
@@ -210,10 +231,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Sign In Button
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        screenWidth * 0.07,
+                        spacingMedium,
+                        screenWidth * 0.07,
+                        0
+                    ),
                     child: Container(
                       width: double.infinity,
-                      height: 49,
+                      height: buttonHeight,
                       decoration: ShapeDecoration(
                         gradient: LinearGradient(
                           begin: Alignment(1.00, 0.00),
@@ -239,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           'Sign In',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 25,
+                            fontSize: buttonFontSize,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -249,12 +275,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Or continue with
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.symmetric(vertical: spacingMedium),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 62,
+                          width: screenWidth * 0.15,
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
@@ -264,17 +290,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                           child: Text(
                             'or continue with',
                             style: TextStyle(
                               color: Color(0xFF5B5B5B),
-                              fontSize: 11,
+                              fontSize: smallFontSize,
                             ),
                           ),
                         ),
                         Container(
-                          width: 62,
+                          width: screenWidth * 0.15,
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
@@ -288,17 +314,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
 
                   // Social Sign Up Buttons
-                  ..._buildSocialButtons(),
+                  ..._buildSocialButtons(
+                      screenWidth: screenWidth,
+                      buttonHeight: socialButtonHeight,
+                      fontSize: fieldFontSize,
+                      spacingSmall: spacingSmall
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  List<Widget> _buildSocialButtons() {
+  List<Widget> _buildSocialButtons({
+    required double screenWidth,
+    required double buttonHeight,
+    required double fontSize,
+    required double spacingSmall,
+  }) {
     final buttons = [
       {'text': 'Sign up with Email or phone', 'icon': 'assets/icons/Email.png', 'route': '/signupEmail'},
       {'text': 'Sign up with Google', 'icon': 'assets/icons/google.png', 'route': ''},
@@ -307,10 +343,15 @@ class _LoginScreenState extends State<LoginScreen> {
     ];
 
     return buttons.map((button) => Padding(
-      padding: const EdgeInsets.fromLTRB(27, 0, 27, 10),
+      padding: EdgeInsets.fromLTRB(
+          screenWidth * 0.07,
+          0,
+          screenWidth * 0.07,
+          spacingSmall
+      ),
       child: Container(
         width: double.infinity,
-        height: 40,
+        height: buttonHeight,
         decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -325,36 +366,32 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           style: TextButton.styleFrom(
             backgroundColor: Colors.white,
+            padding: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
           ),
           child: Row(
             children: [
-              const SizedBox(width: 12),
+              SizedBox(width: screenWidth * 0.03),
               Image.asset(
                 button['icon']!,
-                width: 24,
-                height: 24,
+                width: buttonHeight * 0.6,
+                height: buttonHeight * 0.6,
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: screenWidth * 0.03),
               Text(
                 button['text']!,
                 style: TextStyle(
                   color: Color(0xFF323232),
-                  fontSize: 14,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ],
           ),
         ),
-
       ),
-    )
-
-    ).toList();
-
-
+    )).toList();
   }
 }

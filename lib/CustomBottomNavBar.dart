@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:miyomi/ContentScreen.dart';
+import 'package:miyomi/Create.dart';
+import 'package:miyomi/HomeScreen.dart';
+import 'package:miyomi/NotificationScreen.dart';
+import 'package:miyomi/Premium.dart';
+
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -9,6 +15,33 @@ class CustomBottomNavBar extends StatelessWidget {
     required this.currentIndex,
     required this.onTap,
   }) : super(key: key);
+
+  void _navigate(BuildContext context, int index) {
+    Widget screen;
+    switch (index) {
+      case 0:
+        screen = const HomeScreen();
+        break;
+      case 1:
+        screen = const ContentScreen();
+        break;
+      case 2:
+        screen = const NotificationScreen();
+        break;
+      case 3:
+        screen = const Premium();
+        break;
+      case 4:
+        screen = const Create();
+        break;
+      default:
+        return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +63,11 @@ class CustomBottomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildNavItem('Home', 'assets/icons/home.png', currentIndex == 0, () => onTap(0)),
-          _buildNavItem('Library', 'assets/icons/library.png', currentIndex == 1, () => onTap(1)),
-          _buildNavItem('Notification', 'assets/icons/notification.png', currentIndex == 2, () => onTap(2)),
-          _buildNavItem('Premium', 'assets/icons/premium.png', currentIndex == 3, () => onTap(3)),
-          _buildNavItem('Create', 'assets/icons/create.png', currentIndex == 4, () => onTap(4)),
+          _buildNavItem('Home', 'assets/icons/home.png', currentIndex == 0, () => _navigate(context, 0)),
+          _buildNavItem('Library', 'assets/icons/library.png', currentIndex == 1, () => _navigate(context, 1)),
+          _buildNavItem('Notification', 'assets/icons/notification.png', currentIndex == 2, () => _navigate(context, 2)),
+          _buildNavItem('Premium', 'assets/icons/premium.png', currentIndex == 3, () => _navigate(context, 3)),
+          _buildNavItem('Create', 'assets/icons/create.png', currentIndex == 4, () => _navigate(context, 4)),
         ],
       ),
     );

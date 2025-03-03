@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:miyomi/Mindcourse1Screen.dart';
+import 'package:miyomi/NotificationScreen.dart';
 // Import all your screens
 
 import 'HomeScreen.dart';
